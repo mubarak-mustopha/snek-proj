@@ -6,13 +6,13 @@ import sys
 proj_dir_path = Path(__file__).parent.parent
 
 starter_file_hashes = {
-    "Makefile": "9426bd3d1d8689831acacd1ccd723b4b",
+    "Makefile": "34ecc67a8aeb130bdb487a48dc0accb6",
     "src/asserts.c": "648664cf922ff7f54ce71e83bd317aed",
     "src/asserts.h": "33a33244ac4375be119b8e62859516f2",
     "src/snake_utils.c": "056d0689fbfbbc0d064309afcc1fc3d4",
     "src/snake_utils.h": "7395bfbfb92e08a9c21a9a6d7a8c24b0",
     "src/game.h": "4229f62f5be234f7447595e0f46e697d",
-    "src/unit_tests.c": "f63c71ddd891da22b0a7552f3e7846fb",
+    "src/unit_tests.c": "a3197b718290c79a0e2826fbcb1d33b7",
     "tests/01-simple-in.snk": "9300d4767e059a3056a9bf4bd5455b20",
     "tests/01-simple-ref.snk": "7d1aa30890d6d7f38b4c8fe864680532",
     "tests/02-direction-in.snk": "6d3d008aae31e41adf17c715564a5c5f",
