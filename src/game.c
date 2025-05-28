@@ -122,7 +122,14 @@ static void set_board_at(game_t *game, unsigned int row, unsigned int col, char 
 */
 static bool is_tail(char c) {
   // TODO: Implement this function.
-  return true;
+  switch(c){
+    case 'w': case 'a': case 's': case 'd': {
+      return true;
+    }
+    default: 
+      return false;
+  }
+  
 }
 
 /*
@@ -132,7 +139,13 @@ static bool is_tail(char c) {
 */
 static bool is_head(char c) {
   // TODO: Implement this function.
-  return true;
+  switch(c){
+    case 'W': case 'A': case 'S': case 'D': {
+      return true;
+    }
+    default: 
+      return false;
+  }
 }
 
 /*
@@ -141,6 +154,8 @@ static bool is_head(char c) {
 */
 static bool is_snake(char c) {
   // TODO: Implement this function.
+  char *ptr = strchr("wasd^<v>WASDx",c);
+  if (ptr == NULL) return false;
   return true;
 }
 
@@ -151,7 +166,23 @@ static bool is_snake(char c) {
 */
 static char body_to_tail(char c) {
   // TODO: Implement this function.
-  return '?';
+  switch(c) {
+    case '^':
+      return 'w';
+
+    case '<':
+      return 'a';
+
+    case 'v':
+      return 's';
+      
+    case '>':
+      return 'd';    
+    
+    default:
+      return '?';
+  }
+  
 }
 
 /*
@@ -161,7 +192,22 @@ static char body_to_tail(char c) {
 */
 static char head_to_body(char c) {
   // TODO: Implement this function.
-  return '?';
+    switch(c) {
+    case 'W':
+      return '^';
+
+    case 'A':
+      return '<';
+
+    case 'S':
+      return 'v';
+      
+    case 'D':
+      return '>';    
+    
+    default:
+      return '?';
+  }
 }
 
 /*
@@ -171,7 +217,13 @@ static char head_to_body(char c) {
 */
 static unsigned int get_next_row(unsigned int cur_row, char c) {
   // TODO: Implement this function.
+  if (c == 'v' || c == 's' || c == 'S'){
+    return cur_row + 1;
+  } else if (c == '^' || c == 'w' || c == 'W'){
+    return cur_row - 1;
+  } else{
   return cur_row;
+  }
 }
 
 /*
@@ -181,7 +233,13 @@ static unsigned int get_next_row(unsigned int cur_row, char c) {
 */
 static unsigned int get_next_col(unsigned int cur_col, char c) {
   // TODO: Implement this function.
+  if (c == '>' || c == 'd' || c == 'D'){
+    return cur_col + 1;
+  } else if (c == '<' || c == 'a' || c == 'A'){
+    return cur_col - 1;
+  } else{
   return cur_col;
+  }
 }
 
 /*
@@ -230,7 +288,8 @@ static void update_tail(game_t *game, unsigned int snum) {
 /* Task 4.5 */
 void update_game(game_t *game, int (*add_food)(game_t *game)) {
   // TODO: Implement this function.
-  return;
+  
+  // return;
 }
 
 /* Task 5.1 */
