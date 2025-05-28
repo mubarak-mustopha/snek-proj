@@ -22,21 +22,71 @@ static void update_tail(game_t *game, unsigned int snum);
 static void update_head(game_t *game, unsigned int snum);
 
 /* Task 1 */
+void create_default_board(char **board){
+    for (int i=0;i < 18;i++){
+      board[i] = (char *) malloc(22 * sizeof(char));
+    }
+
+    strcpy(board[0], "####################\n");
+    strcpy(board[1], "#                  #\n");
+    strcpy(board[2], "# d>D    *         #\n");
+    strcpy(board[3], "#                  #\n");
+    strcpy(board[4], "#                  #\n");
+    strcpy(board[5], "#                  #\n");
+    strcpy(board[6], "#                  #\n");
+    strcpy(board[7], "#                  #\n");
+    strcpy(board[8], "#                  #\n");
+    strcpy(board[9], "#                  #\n");
+    strcpy(board[10], "#                  #\n");
+    strcpy(board[11], "#                  #\n");
+    strcpy(board[12], "#                  #\n");
+    strcpy(board[13], "#                  #\n");
+    strcpy(board[14], "#                  #\n");
+    strcpy(board[16], "#                  #\n");
+    strcpy(board[15], "#                  #\n");
+    strcpy(board[17], "####################\n");
+}
+
 game_t *create_default_game() {
   // TODO: Implement this function.
-  return NULL;
+  game_t *game = (game_t *) malloc(sizeof(game_t));
+  game->num_rows = 18;
+  game->board = (char **) malloc(18 * sizeof(char *));
+  game->num_snakes = 1;
+  game->snakes = (snake_t *) malloc(sizeof(snake_t));
+  
+  snake_t *snake = game->snakes;
+  snake->tail_row = 2;
+  snake->tail_col = 2;
+  snake->head_row = 2;
+  snake->head_col = 4;
+  snake->live = true;
+
+  create_default_board(game->board);
+
+  return game;
 }
 
 /* Task 2 */
 void free_game(game_t *game) {
   // TODO: Implement this function.
-  return;
+  free(game->snakes);
+  for (int i = 0;i < game->num_rows; i++){
+    free(game->board[i]);
+  }
+  free(game->board);
+  free(game);
+
+  // return;
 }
 
 /* Task 3 */
 void print_board(game_t *game, FILE *fp) {
   // TODO: Implement this function.
-  return;
+  for (int i=0;i < game->num_rows;i++){
+    fprintf(fp, "%s", game->board[i]);
+  }
+  // return;
 }
 
 /*
