@@ -293,8 +293,6 @@ void sort_game_snakes(game_t *game){
 */
 static char next_square(game_t *game, unsigned int snum) {
   // TODO: Implement this function.
-    // sort game snakes by tail coords
-  sort_game_snakes(game);
 
   snake_t snake = game->snakes[snum];
 
@@ -320,10 +318,6 @@ static char next_square(game_t *game, unsigned int snum) {
 
 static void update_head(game_t *game, unsigned int snum) {
   // TODO: Implement this function.
-
-  // sort game snakes by tail coords
-  sort_game_snakes(game);
-
   snake_t *snake = &(game->snakes[snum]);
   char head = game->board[snake->head_row][snake->head_col];
 
@@ -352,7 +346,6 @@ static void update_head(game_t *game, unsigned int snum) {
 */
 static void update_tail(game_t *game, unsigned int snum) {
   // TODO: Implement this function.
-  sort_game_snakes(game);
   snake_t *snake = &(game->snakes[snum]);
   char tail_char = game->board[snake->tail_row][snake->tail_col];
 
@@ -371,7 +364,26 @@ static void update_tail(game_t *game, unsigned int snum) {
 /* Task 4.5 */
 void update_game(game_t *game, int (*add_food)(game_t *game)) {
   // TODO: Implement this function.
-  
+  sort_game_snakes(game);
+  snake_t *snake;
+  for (int i = 0;i < game->num_snakes;i++){
+    char next_square_char = next_square(game, i);
+    snake = &(game->snakes[i]);
+
+    if (is_snake(next_square_char) || next_square_char == '#'){
+      // snake dies
+      snake->live = false;
+      game->board[snake->head_row][snake->head_col] = 'x';
+    }else if (next_square_char == '*'){
+      // snake grows by length 1
+      update_head(game, i);
+      add_food(game);
+    }else {
+      update_head(game, i);
+      update_tail(game, i);
+    }
+    
+  }
   // return;
 }
 
