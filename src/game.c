@@ -327,14 +327,14 @@ static void update_head(game_t *game, unsigned int snum) {
   snake_t *snake = &(game->snakes[snum]);
   char head = game->board[snake->head_row][snake->head_col];
 
-  // update game board
+  // update game board before move
   game->board[snake->head_row][snake->head_col] = head_to_body(head);
 
-  // update snake_t struct
+  // update snake head coord
   snake->head_row = get_next_row(snake->head_row, head);
   snake->head_col = get_next_col(snake->head_col, head);
 
-  // update game board
+  // update game board after move
   game->board[snake->head_row][snake->head_col] = head;
 
   return;
@@ -352,7 +352,20 @@ static void update_head(game_t *game, unsigned int snum) {
 */
 static void update_tail(game_t *game, unsigned int snum) {
   // TODO: Implement this function.
-  return;
+  sort_game_snakes(game);
+  snake_t *snake = &(game->snakes[snum]);
+  char tail_char = game->board[snake->tail_row][snake->tail_col];
+
+  // update game board before move
+  game->board[snake->tail_row][snake->tail_col] = ' ';
+
+  // update snake tail coord
+  snake->tail_col = get_next_col(snake->tail_col, tail_char);
+  snake->tail_row = get_next_row(snake->tail_row, tail_char);  
+
+  // update game board after move
+  tail_char = body_to_tail(game->board[snake->tail_row][snake->tail_col]);
+  game->board[snake->tail_row][snake->tail_col] = tail_char;
 }
 
 /* Task 4.5 */
