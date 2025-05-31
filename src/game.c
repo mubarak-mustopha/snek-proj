@@ -317,8 +317,26 @@ static char next_square(game_t *game, unsigned int snum) {
 
   Note that this function ignores food, walls, and snake bodies when moving the head.
 */
+
 static void update_head(game_t *game, unsigned int snum) {
   // TODO: Implement this function.
+
+  // sort game snakes by tail coords
+  sort_game_snakes(game);
+
+  snake_t *snake = &(game->snakes[snum]);
+  char head = game->board[snake->head_row][snake->head_col];
+
+  // update game board
+  game->board[snake->head_row][snake->head_col] = head_to_body(head);
+
+  // update snake_t struct
+  snake->head_row = get_next_row(snake->head_row, head);
+  snake->head_col = get_next_col(snake->head_col, head);
+
+  // update game board
+  game->board[snake->head_row][snake->head_col] = head;
+
   return;
 }
 
