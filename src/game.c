@@ -293,7 +293,17 @@ void sort_game_snakes(game_t *game){
 */
 static char next_square(game_t *game, unsigned int snum) {
   // TODO: Implement this function.
-  return '?';
+    // sort game snakes by tail coords
+  sort_game_snakes(game);
+
+  snake_t snake = game->snakes[snum];
+
+  char head = game->board[snake.head_row][snake.head_col];
+
+  int next_col = get_next_col(snake.head_col, head);
+  int next_row = get_next_row(snake.head_row, head);
+
+  return game->board[next_row][next_col];
 }
 
 /*
