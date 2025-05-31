@@ -243,6 +243,48 @@ static unsigned int get_next_col(unsigned int cur_col, char c) {
 }
 
 /*
+ Returns 1 if snake_a should have a higher numbering than snake_b
+  i.e the tail of snake_a is in a higher coordinate
+  Returns -1 if the reverse is the case
+*/
+int cmp_snakes(snake_t snake_a, snake_t snake_b){
+  if(snake_a.tail_row > snake_b.tail_row){
+    return 1;
+  } else if (snake_a.tail_row < snake_b.tail_row){
+    return -1;
+  } else {
+      if(snake_a.tail_col > snake_b.tail_col){
+          return 1;
+        } else{
+          return -1;
+        }
+  }
+}
+
+void sort_game_snakes(game_t *game){
+  // bubble sort
+  bool swap;
+  for (int i=0; i< game->num_snakes;i++){
+    swap = false;
+    for(int j=0; j < game->num_snakes -i - 1; j++ ){
+
+      if (cmp_snakes(game->snakes[j], game->snakes[j+1]) == 1){
+        // i.e jth snake should have a higher numbering than (j+1)th snake
+        snake_t temp_snake = game->snakes[j];
+        game->snakes[j] = game->snakes[j+1];
+        game->snakes[j+1] = temp_snake;
+        swap = true;
+      }
+
+    }
+    if (!swap)
+      break;
+  }
+}
+
+
+
+/*
   Task 4.2
 
   Helper function for update_game. Return the character in the cell the snake is moving into.
