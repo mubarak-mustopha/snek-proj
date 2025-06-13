@@ -364,7 +364,7 @@ static void update_tail(game_t *game, unsigned int snum) {
 /* Task 4.5 */
 void update_game(game_t *game, int (*add_food)(game_t *game)) {
   // TODO: Implement this function.
-  sort_game_snakes(game);
+  // sort_game_snakes(game);
   snake_t *snake;
   for (int i = 0;i < game->num_snakes;i++){
     char next_square_char = next_square(game, i);
@@ -390,13 +390,52 @@ void update_game(game_t *game, int (*add_food)(game_t *game)) {
 /* Task 5.1 */
 char *read_line(FILE *fp) {
   // TODO: Implement this function.
-  return NULL;
+  char *line = (char *) malloc(1024 * sizeof(char));
+  if (line == NULL)
+    return NULL;
+
+  if (fgets(line, 1024, fp) == NULL){
+    free(line);
+    return NULL;
+  }
+
+  unsigned int line_size = strlen(line);
+  char *new_line = realloc(line, line_size * sizeof(char) + 1);
+  return new_line;
 }
 
 /* Task 5.2 */
 game_t *load_board(FILE *fp) {
   // TODO: Implement this function.
-  return NULL;
+  game_t *game = (game_t *) malloc(sizeof(game_t));
+  if (game == NULL)
+    return NULL;
+
+  char **board = (char **) malloc( 1024 * sizeof(char *));
+  if (board==NULL){
+    free(game);
+    return NULL;
+  }
+
+  int i;
+  for(i=0;;i++){
+    char *line = read_line(fp);
+    if (line == NULL)
+      break;
+    board[i] = line;
+  }
+
+  if (i == 0){ // no line was read
+    free(game);
+    return NULL;
+  }
+
+
+  game->num_rows = i;
+  game->board = realloc(board, i * sizeof(char *));
+  game->snakes = (snake_t *) malloc(sizeof(snake_t));
+
+  return game;
 }
 
 /*
