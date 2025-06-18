@@ -140,7 +140,7 @@ static bool is_tail(char c) {
 static bool is_head(char c) {
   // TODO: Implement this function.
   switch(c){
-    case 'W': case 'A': case 'S': case 'D': {
+    case 'W': case 'A': case 'S': case 'D': case 'x': {
       return true;
     }
     default: 
@@ -448,11 +448,52 @@ game_t *load_board(FILE *fp) {
 */
 static void find_head(game_t *game, unsigned int snum) {
   // TODO: Implement this function.
-  return;
+  snake_t snake = game->snakes[snum];
+  unsigned int i = snake.tail_row, j = snake.tail_col;
+  char board_char = game->board[i][j];
+  while (!is_head(board_char)){
+    if (board_char=='w' || board_char=='^'){
+      i--;
+    } else if (board_char=='a' || board_char=='<'){
+      j--;
+    } else if (board_char=='s' || board_char=='v'){
+      i++;
+    } else if (board_char=='d' || board_char=='>'){
+      j++;
+    }
+
+    board_char = game->board[i][j];
+  }
+
+  game->snakes[snum].head_row = i;
+  game->snakes[snum].head_col = j;
+  if (game->board[i][j] == 'x')
+    game->snakes[snum].live = false;
+  else  
+    game->snakes[snum].live = true;
 }
 
 /* Task 6.2 */
 game_t *initialize_snakes(game_t *game) {
   // TODO: Implement this function.
-  return NULL;
+  unsigned int tail_count = 0;
+
+  for (int i = 0;i < game->num_rows;i++){
+    // num of chars
+    unsigned int row_size = strlen(game->board[i]);
+    for (int j=0; j <= row_size; j++){
+
+      if (is_tail(game->board[i][j])) {
+        tail_count++;
+        snake_t snake;
+        snake.tail_row = i; snake.tail_col = j;
+        game->snakes = realloc(game->snakes, tail_count * sizeof(snake_t));
+        game->snakes[tail_count - 1] = snake;
+        find_head(game, tail_count - 1);
+      }
+
+    }
+  }
+  game->num_snakes = tail_count;
+  return game;
 }
